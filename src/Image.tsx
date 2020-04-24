@@ -25,6 +25,8 @@ interface ImageProps {
   transitionDuration?: number;
   tint?: "dark" | "light";
   onError: (error: { nativeEvent: { error: Error } }) => void;
+  onLoadStart?: () => void;
+  onLoadEnd?: () => void;
 }
 
 interface ImageState {
@@ -86,7 +88,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
   }
 
   render() {
-    const { preview, style, defaultSource, tint, ...otherProps } = this.props;
+    const { preview, style, defaultSource, tint, onLoadStart, onLoadEnd, ...otherProps } = this.props;
     const { uri, intensity } = this.state;
     const isImageReady = !!uri;
     const opacity = intensity.interpolate({
@@ -108,6 +110,8 @@ export default class Image extends React.Component<ImageProps, ImageState> {
             source={preview}
             style={computedStyle}
             blurRadius={Platform.OS === "android" ? 0.5 : 0}
+            onLoadStart={onLoadStart}
+            onLoadEnd={onLoadEnd}
             {...otherProps}
           />
         )}
