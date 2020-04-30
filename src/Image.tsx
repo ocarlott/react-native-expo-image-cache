@@ -2,7 +2,6 @@
 import * as _ from "lodash";
 import * as React from "react";
 import {
-  Image as RNImage,
   Animated,
   StyleSheet,
   View,
@@ -104,9 +103,11 @@ export default class Image extends React.Component<ImageProps, ImageState> {
     ];
     return (
       <View {...{ style }}>
-        {!!defaultSource && !isImageReady && <RNImage source={defaultSource} style={computedStyle} {...otherProps} />}
+        {!!defaultSource && !isImageReady && (
+          <Animated.Image source={defaultSource} style={computedStyle} {...otherProps} />
+        )}
         {!!preview && (
-          <RNImage
+          <Animated.Image
             source={preview}
             style={computedStyle}
             blurRadius={Platform.OS === "android" ? 0.5 : 0}
@@ -115,7 +116,7 @@ export default class Image extends React.Component<ImageProps, ImageState> {
             {...otherProps}
           />
         )}
-        {isImageReady && <RNImage source={{ uri }} style={computedStyle} {...otherProps} />}
+        {isImageReady && <Animated.Image source={{ uri }} style={computedStyle} {...otherProps} />}
         {!!preview && Platform.OS === "ios" && <AnimatedBlurView style={computedStyle} {...{ intensity, tint }} />}
         {!!preview && Platform.OS === "android" && (
           <Animated.View style={[computedStyle, { backgroundColor: tint === "dark" ? black : white, opacity }]} />
